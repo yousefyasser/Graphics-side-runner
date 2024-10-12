@@ -1,11 +1,13 @@
+#include <stdlib.h>
 #include <glut.h>
 #include "constants.h"
+#include "Character/character.h"
 
 void Display() {
 
-	glClearColor(0, 0, 0, 0.0f);
+	glClearColor(1, 1, 1, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	drawRobot();
 
 	glFlush();
 }
