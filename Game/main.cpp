@@ -5,15 +5,15 @@
 #include "Ground/ground.h"
 
 float groundSpeed = 0;
-float gameSpeed = 0;
-float maxGameSpeed = 0.02f;
+float gameSpeed = 0.02;
+float maxGameSpeed = 0.1f;
 
 void Display() {
 
 	glClearColor(1, 1, 1, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
-	drawRobot();
+	drawRobot(groundSpeed);
 	drawGround(groundSpeed);
 	
 	glFlush();
@@ -21,7 +21,7 @@ void Display() {
 
 void Anim() {
 	groundSpeed += gameSpeed;
-	gameSpeed += 0.00005f;
+	gameSpeed += 0.000001f;
 
 	if (gameSpeed > maxGameSpeed) {
 		gameSpeed = maxGameSpeed;
@@ -31,7 +31,8 @@ void Anim() {
 		groundSpeed = 0;
 	}
 
-	glutPostRedisplay(); // Redraw the scene
+	moveRobot();
+	glutPostRedisplay();
 }
 
 void main(int argc, char** argr) {
@@ -42,6 +43,8 @@ void main(int argc, char** argr) {
 
 	glutCreateWindow("Side Runner");
 	glutDisplayFunc(Display);
+	glutKeyboardFunc(Key);
+	glutKeyboardUpFunc(KeyUp);
 	glutIdleFunc(Anim);
 
 	glPointSize(25);

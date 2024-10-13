@@ -1,7 +1,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-int SCREEN_WIDTH = 1400;
+int SCREEN_WIDTH = 1000;
 int SCREEN_HEIGHT = 700;
 int SCREEN_X = 750;
 int SCREEN_Y = 50;
