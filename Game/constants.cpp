@@ -9,5 +9,5 @@ int GAME_TIME = 60;
 
 int MAX_HEALTH = 5;
 
-float OBSTACLE_SPAWN_RATE = 3.0f;
-float FLYING_OBSTACLE_PROB = 0.5f;
+float SPAWN_RATE = 1.0f;
+float FLYING_SPAWNABLE_PROB = 0.5f;

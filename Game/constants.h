@@ -8,7 +8,7 @@ extern int SCREEN_X;
 extern int SCREEN_Y;
 extern int MAX_HEALTH;
 extern int GAME_TIME;
-extern float OBSTACLE_SPAWN_RATE;
-extern float FLYING_OBSTACLE_PROB;
+extern float SPAWN_RATE;
+extern float FLYING_SPAWNABLE_PROB;
 
 #endif

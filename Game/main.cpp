@@ -5,7 +5,8 @@
 #include "Character/character.h"
 #include "Ground/ground.h"
 #include "OnScreenInfo/onScreenInfo.h"
-#include "Obstacles/obstacle.h"
+#include "Spawnable/spawnable.h"
+#include "BoundingBox/boundingBox.h"
 
 float groundSpeed = 0.1f;
 float gameSpeed = 0.2f;
@@ -14,8 +15,8 @@ float maxGameSpeed = 10.0f;
 int score = 0;
 float remainingSeconds = GAME_TIME;
 
-std::vector<obstacle_t> obstacles;
-float spawnInterval = OBSTACLE_SPAWN_RATE;
+std::vector<spawnable_t> spawnables;
+float spawnInterval = SPAWN_RATE;
 
 void Display() {
 
@@ -25,13 +26,13 @@ void Display() {
 	drawRobot(groundSpeed);
 	drawGround(groundSpeed);
 	drawInfo(robot.health, score, remainingSeconds);
-	drawObstacles(obstacles);
+	drawSpawnables(spawnables);
 
 	glFlush();
 }
 
 void Anim(int v) {
-	static float obstacleSpawnTimer = 0.0f;
+	static float spawnTimer = 0.0f;
 	float frameTime = 1.0f / FPS;
 
 	remainingSeconds -= frameTime;
@@ -50,10 +51,10 @@ void Anim(int v) {
 		groundSpeed += gameSpeed;
 	}
 
-	obstacleSpawnTimer += frameTime;
-	if (obstacleSpawnTimer >= spawnInterval) {
-		spawnObstacle(obstacles);
-		obstacleSpawnTimer = 0.0f;
+	spawnTimer += frameTime;
+	if (spawnTimer >= spawnInterval) {
+		spawn(spawnables, OBSTACLE);
+		spawnTimer = 0.0f;
 
 		if (spawnInterval > 0.5) {
 			spawnInterval -= 0.1f;
@@ -61,7 +62,13 @@ void Anim(int v) {
 	}
 
 	moveRobot();
-	moveObstacles(obstacles, gameSpeed);
+	moveSpawnables(spawnables, gameSpeed);
+
+	int collidedSpawnableIndex = collideWithSpawnable(spawnables);
+	if (collidedSpawnableIndex != -1) {
+		performSpawnableAction(spawnables[collidedSpawnableIndex], &score, &robot.health);
+		removeSpawnable(spawnables, collidedSpawnableIndex);
+	}
 
 	glutPostRedisplay();
 	glutTimerFunc(16, Anim, 0);
